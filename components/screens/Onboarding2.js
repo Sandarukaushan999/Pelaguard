@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -23,23 +24,30 @@ const Onboarding2 = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#1E3A8A" />
       
-      {/* Ocean Background Effect */}
-      <View style={styles.backgroundEffect}>
-        <View style={styles.shark} />
-        <View style={styles.plankton1} />
-        <View style={styles.plankton2} />
-        <View style={styles.plankton3} />
-        <View style={styles.plankton4} />
-        <View style={styles.plankton5} />
-      </View>
+      {/* Background Image */}
+      <ImageBackground 
+        source={require('../../assets/back1.jpg')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+        imageStyle={styles.backgroundImageStyle}
+      >
+        {/* Ocean Background Effect */}
+        <View style={styles.backgroundEffect}>
+          <View style={styles.shark} />
+          <View style={styles.plankton1} />
+          <View style={styles.plankton2} />
+          <View style={styles.plankton3} />
+          <View style={styles.plankton4} />
+          <View style={styles.plankton5} />
+        </View>
 
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-        <Text style={styles.backButtonText}>‹</Text>
-      </TouchableOpacity>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>‹</Text>
+        </TouchableOpacity>
 
-      {/* Content Card */}
-      <View style={styles.contentCard}>
+        {/* Content Card */}
+        <View style={styles.contentCard}>
         {/* Progress Indicators */}
         <View style={styles.progressContainer}>
           <View style={[styles.progressDot, styles.activeDot]} />
@@ -66,9 +74,10 @@ const Onboarding2 = ({ navigation }) => {
 
         {/* Next Button */}
         <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-          <Text style={styles.nextButtonText}>Next ></Text>
+          <Text style={styles.nextButtonText}>Next {'>'}</Text>
         </TouchableOpacity>
-      </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -77,6 +86,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1E3A8A',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  backgroundImageStyle: {
+    alignSelf: 'flex-start',
   },
   backgroundEffect: {
     position: 'absolute',
@@ -192,13 +209,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   contentContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 40,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 20,
   },
   titleRegular: {
@@ -210,14 +227,14 @@ const styles = StyleSheet.create({
   statistic: {
     fontSize: 18,
     color: '#1F2937',
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 16,
     fontWeight: '600',
   },
   description: {
     fontSize: 14,
     color: '#6B7280',
-    textAlign: 'center',
+    textAlign: 'left',
     lineHeight: 20,
   },
   nextButton: {

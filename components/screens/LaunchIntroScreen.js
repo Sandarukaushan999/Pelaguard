@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -19,13 +20,20 @@ const LaunchIntroScreen = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#1E3A8A" />
       
-      {/* Ocean Background Effect */}
-      <View style={styles.backgroundEffect}>
-        <View style={styles.jellyfish1} />
-        <View style={styles.jellyfish2} />
-        <View style={styles.jellyfish3} />
-        <View style={styles.jellyfish4} />
-      </View>
+      {/* Background Image */}
+      <ImageBackground 
+        source={require('../../assets/back1.jpg')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+        imageStyle={styles.backgroundImageStyle}
+      >
+        {/* Ocean Background Effect */}
+        <View style={styles.backgroundEffect}>
+          <View style={styles.jellyfish1} />
+          <View style={styles.jellyfish2} />
+          <View style={styles.jellyfish3} />
+          <View style={styles.jellyfish4} />
+        </View>
 
       {/* Content Card */}
       <View style={styles.contentCard}>
@@ -55,9 +63,10 @@ const LaunchIntroScreen = ({ navigation }) => {
 
         {/* Next Button */}
         <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-          <Text style={styles.nextButtonText}>Next ></Text>
+          <Text style={styles.nextButtonText}>Next {'>'}</Text>
         </TouchableOpacity>
-      </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -66,6 +75,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1E3A8A',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  backgroundImageStyle: {
+    alignSelf: 'flex-start',
   },
   backgroundEffect: {
     position: 'absolute',
@@ -120,8 +137,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 58,
+    borderTopRightRadius: 58,
     paddingTop: 20,
     paddingHorizontal: 30,
     paddingBottom: 50,
@@ -134,45 +151,47 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   progressDot: {
-    width: 8,
+    width: 16,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#D1D5DB',
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#8B5CF6',
-    width: 24,
+    backgroundColor: '#5145E5',
+    width: 56,
     height: 8,
     borderRadius: 4,
   },
   contentContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 40,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
     marginBottom: 8,
   },
   titleRegular: {
+    fontSize: 32,
+    fontWeight: 'bold',
     color: '#1F2937',
   },
   titleHighlight: {
-    color: '#8B5CF6',
+    color: '#5145E5',
   },
   subtitle: {
     fontSize: 18,
     color: '#374151',
-    textAlign: 'center',
-    marginBottom: 16,
+    textAlign: 'left',
+    marginBottom: 24,
     fontWeight: '500',
   },
   description: {
     fontSize: 14,
     color: '#6B7280',
-    textAlign: 'center',
+    textAlign: 'left',
     lineHeight: 20,
   },
   nextButton: {
@@ -180,7 +199,7 @@ const styles = StyleSheet.create({
   },
   nextButtonText: {
     fontSize: 16,
-    color: '#8B5CF6',
+    color: '#6B7280',
     fontWeight: '600',
   },
 });
