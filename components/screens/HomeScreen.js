@@ -60,19 +60,7 @@ const HomeScreen = () => {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Impact Score Card */}
-        <View style={styles.impactCard}>
-          <Text style={styles.impactLabel}>Your Impact Score</Text>
-          <Text style={styles.impactScore}>847</Text>
-          <View style={styles.weeklyProgress}>
-            <Text style={styles.progressIcon}>📈</Text>
-            <Text style={styles.weeklyText}>+127 this week</Text>
-          </View>
-          <Text style={styles.factTitle}>Ocean Fact of the Day</Text>
-          <Text style={styles.factText}>
-            The Great Pacific Garbage Patch is twice the size of Texas! But with your help, we can make it smaller every day.
-          </Text>
-        </View>
+        
 
         {/* Ocean Awareness */}
         <View style={styles.sectionCard}>

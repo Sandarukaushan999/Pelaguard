@@ -13,11 +13,15 @@ const { width, height } = Dimensions.get('window');
 
 const Onboarding2 = ({ navigation }) => {
   const handleNext = () => {
-    navigation.navigate('Onboarding3');
+    navigation.navigate('Onboarding2');
   };
 
   const handleBack = () => {
     navigation.goBack();
+  };
+
+  const handleSkip = () => {
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -26,24 +30,21 @@ const Onboarding2 = ({ navigation }) => {
       
       {/* Background Image */}
       <ImageBackground 
-        source={require('../../assets/back1.jpg')}
+        source={require('../../assets/back3.jpg')}
         style={styles.backgroundImage}
         resizeMode="cover"
         imageStyle={styles.backgroundImageStyle}
       >
-        {/* Ocean Background Effect */}
-        <View style={styles.backgroundEffect}>
-          <View style={styles.shark} />
-          <View style={styles.plankton1} />
-          <View style={styles.plankton2} />
-          <View style={styles.plankton3} />
-          <View style={styles.plankton4} />
-          <View style={styles.plankton5} />
-        </View>
+        
 
         {/* Back Button */}
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
           <Text style={styles.backButtonText}>‹</Text>
+        </TouchableOpacity>
+
+        {/* Skip Button */}
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+          <Text style={styles.skipButtonText}>Skip</Text>
         </TouchableOpacity>
 
         {/* Content Card */}
@@ -60,8 +61,9 @@ const Onboarding2 = ({ navigation }) => {
           <Text style={styles.title}>
             <Text style={styles.titleRegular}>Ocean </Text>
             <Text style={styles.titleHighlight}>Crisis</Text>
-            <Text style={styles.titleRegular}> Alert</Text>
+            
           </Text>
+          <Text style={styles.titleRegular}> Alert</Text>
           
           <Text style={styles.statistic}>
             8 million tons of plastic enter our oceans every year
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     height: '100%',
+    
   },
   backgroundImageStyle: {
     alignSelf: 'flex-start',
@@ -176,14 +179,27 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
+  skipButton: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    zIndex: 10,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
   contentCard: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 58,
+    borderTopRightRadius: 58,
     paddingTop: 20,
     paddingHorizontal: 30,
     paddingBottom: 50,
@@ -196,15 +212,15 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   progressDot: {
-    width: 8,
+    width: 16,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#D1D5DB',
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#1E3A8A',
-    width: 24,
+    backgroundColor: '#5145E5',
+    width: 56,
     height: 8,
     borderRadius: 4,
   },
@@ -216,13 +232,15 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'left',
-    marginBottom: 20,
+    marginBottom: 4,
   },
   titleRegular: {
-    color: '#1F2937',
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#1E1E1E',
   },
   titleHighlight: {
-    color: '#8B5CF6',
+    color: '#5145E5',
   },
   statistic: {
     fontSize: 18,

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -30,28 +31,28 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#1E3A8A" />
+      <StatusBar barStyle="light-content" backgroundColor="#0A1628" />
       
-      {/* Ocean Background Effect */}
-      <View style={styles.backgroundEffect}>
-        <View style={styles.fish} />
-        <View style={styles.bubble1} />
-        <View style={styles.bubble2} />
-        <View style={styles.bubble3} />
-        <View style={styles.bubble4} />
-      </View>
+      {/* Background Image */}
+      <ImageBackground 
+        source={require('../../assets/back6.jpg')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+        imageStyle={styles.backgroundImageStyle}
+      >
+        
 
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-        <Text style={styles.backButtonText}>‹</Text>
-      </TouchableOpacity>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>‹</Text>
+        </TouchableOpacity>
 
-      {/* Content Card */}
-      <View style={styles.contentCard}>
+        {/* Content Card */}
+        <View style={styles.contentCard}>
         {/* Progress Indicators */}
         <View style={styles.progressContainer}>
-          <View style={[styles.progressLine, styles.activeLine]} />
           <View style={styles.progressLine} />
+          <View style={[styles.progressLine, styles.activeLine]} />
         </View>
 
         {/* Header */}
@@ -104,7 +105,8 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.signupLink}>Sign up</Text>
           </TouchableOpacity>
         </View>
-      </View>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -112,7 +114,15 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E3A8A',
+    backgroundColor: '#0A1628',
+  },
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  backgroundImageStyle: {
+    alignSelf: 'flex-start',
   },
   backgroundEffect: {
     position: 'absolute',
@@ -121,54 +131,35 @@ const styles = StyleSheet.create({
     width: width,
     height: height * 0.4,
   },
-  fish: {
+  jellyfish1: {
+    position: 'absolute',
+    top: 80,
+    left: 50,
+    width: 70,
+    height: 100,
+    backgroundColor: '#4FC3F7',
+    opacity: 0.8,
+    borderRadius: 35,
+  },
+  jellyfish2: {
     position: 'absolute',
     top: 120,
     right: 80,
-    width: 50,
-    height: 30,
-    backgroundColor: '#F59E0B',
-    borderRadius: 25,
+    width: 60,
+    height: 85,
+    backgroundColor: '#29B6F6',
+    opacity: 0.7,
+    borderRadius: 30,
   },
-  bubble1: {
-    position: 'absolute',
-    top: 100,
-    left: 60,
-    width: 8,
-    height: 8,
-    backgroundColor: '#FFFFFF',
-    opacity: 0.6,
-    borderRadius: 4,
-  },
-  bubble2: {
-    position: 'absolute',
-    top: 140,
-    left: 100,
-    width: 6,
-    height: 6,
-    backgroundColor: '#FFFFFF',
-    opacity: 0.4,
-    borderRadius: 3,
-  },
-  bubble3: {
+  jellyfish3: {
     position: 'absolute',
     top: 160,
-    right: 120,
-    width: 10,
-    height: 10,
-    backgroundColor: '#FFFFFF',
-    opacity: 0.5,
-    borderRadius: 5,
-  },
-  bubble4: {
-    position: 'absolute',
-    top: 180,
-    left: 40,
-    width: 7,
-    height: 7,
-    backgroundColor: '#FFFFFF',
-    opacity: 0.3,
-    borderRadius: 3.5,
+    left: 120,
+    width: 55,
+    height: 80,
+    backgroundColor: '#039BE5',
+    opacity: 0.6,
+    borderRadius: 27,
   },
   backButton: {
     position: 'absolute',
@@ -191,8 +182,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 58,
+    borderTopRightRadius: 58,
     paddingTop: 20,
     paddingHorizontal: 30,
     paddingBottom: 50,
@@ -201,39 +192,41 @@ const styles = StyleSheet.create({
   progressContainer: {
     flexDirection: 'row',
     marginBottom: 30,
+    justifyContent: 'flex-start',
+    paddingHorizontal: 100,
   },
   progressLine: {
-    height: 4,
+    height: 6,
     backgroundColor: '#E5E7EB',
-    borderRadius: 2,
+    borderRadius: 3,
     flex: 1,
     marginHorizontal: 2,
   },
   activeLine: {
-    backgroundColor: '#8B5CF6',
+    backgroundColor: '#5145E5',
   },
   header: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: 30,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#8B5CF6',
+    color: '#1E1E1E',
     marginBottom: 8,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   subtitle: {
     fontSize: 16,
-    color: '#1F2937',
-    textAlign: 'center',
+    color: '#6B7280',
+    textAlign: 'left',
   },
   formContainer: {
     marginBottom: 30,
   },
   input: {
     backgroundColor: '#F3F4F6',
-    borderRadius: 12,
+    borderRadius: 24,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 16,
@@ -251,8 +244,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   loginButton: {
-    backgroundColor: '#1F2937',
-    borderRadius: 12,
+    backgroundColor: '#1E1E1E',
+    borderRadius: 24,
     paddingVertical: 16,
     alignItems: 'center',
     marginBottom: 16,
@@ -266,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E5E7EB',
-    borderRadius: 12,
+    borderRadius: 24,
     paddingVertical: 16,
     flexDirection: 'row',
     alignItems: 'center',
@@ -294,7 +287,7 @@ const styles = StyleSheet.create({
   },
   signupLink: {
     fontSize: 14,
-    color: '#8B5CF6',
+    color: '#5145E5',
     fontWeight: 'bold',
   },
 });

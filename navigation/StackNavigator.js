@@ -4,10 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 
 // Import screens
 import LaunchScreen from '../components/screens/LaunchScreen';
-import LaunchIntroScreen from '../components/screens/LaunchIntroScreen';
-import Onboarding1 from '../components/screens/Onboarding1';
-import Onboarding2 from '../components/screens/Onboarding2';
-import Onboarding3 from '../components/screens/Onboarding3';
+import Launch2 from '../components/screens/Launch2';
+import Onboarding1 from '../components/screens/Onboarding2';
+import Onboarding2 from '../components/screens/LaunchIntroScreen';
+import Onboarding3 from '../components/screens/Onboarding1';
 import LoginScreen from '../components/screens/LoginScreen';
 import SignupScreen from '../components/screens/SignupScreen';
 import TabNavigator from './TabNavigator';
@@ -25,7 +25,7 @@ const StackNavigator = () => {
         }}
       >
         <Stack.Screen name="LaunchScreen" component={LaunchScreen} />
-        <Stack.Screen name="LaunchIntroScreen" component={LaunchIntroScreen} />
+        <Stack.Screen name="Launch2" component={Launch2} />
         <Stack.Screen name="Onboarding1" component={Onboarding1} />
         <Stack.Screen name="Onboarding2" component={Onboarding2} />
         <Stack.Screen name="Onboarding3" component={Onboarding3} />

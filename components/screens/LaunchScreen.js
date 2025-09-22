@@ -4,13 +4,14 @@ import {
   Text,
   StyleSheet,
   StatusBar,
+  ImageBackground,
 } from 'react-native';
 
 const LaunchScreen = ({ navigation }) => {
   useEffect(() => {
     // Auto navigate to next screen after 3 seconds
     const timer = setTimeout(() => {
-      navigation.replace('LaunchIntroScreen');
+      navigation.replace('Launch2');
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -20,24 +21,31 @@ const LaunchScreen = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0A0B2E" />
 
-      {/* Background to mimic the provided purple/blue gradient */}
-      <View style={styles.backgroundLayer}>
-        <View style={styles.pinkGlow} />
-        <View style={styles.purpleGlow} />
-        <View style={styles.blueGlow} />
-        <View style={styles.vignette} />
-      </View>
-
-      {/* Centered wordmark */}
-      <View style={styles.brandContainer}>
-        <View style={styles.brandRow}>
-          <Text style={styles.brandPela}>Pela</Text>
-          <Text style={styles.brandGuard}>guard</Text>
-          <Text style={styles.brandTM}>™</Text>
+      {/* Background Image */}
+      <ImageBackground 
+        source={require('../../assets/back7.jpg')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
+      >
+        {/* Background to mimic the provided purple/blue gradient */}
+        <View style={styles.backgroundLayer}>
+          <View style={styles.pinkGlow} />
+          <View style={styles.purpleGlow} />
+          <View style={styles.blueGlow} />
+          <View style={styles.vignette} />
         </View>
-        <Text style={styles.tagline}>Defend the Sea, Sustain Life</Text>
-        <Text style={styles.tagline}>Defend the Sea, Sustain Life</Text>
-      </View>
+
+        {/* Centered wordmark */}
+        <View style={styles.brandContainer}>
+          <View style={styles.brandRow}>
+            <Text style={styles.brandPela}>Pela</Text>
+            <Text style={styles.brandGuard}>guard</Text>
+            <Text style={styles.brandTM}>™</Text>
+          </View>
+          <Text style={styles.tagline}>Defend the Sea, Sustain Life</Text>
+          
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -46,6 +54,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0A0B2E',
+  },
+  backgroundImage: {
+    flex: 1,
   },
   backgroundLayer: {
     ...StyleSheet.absoluteFillObject,

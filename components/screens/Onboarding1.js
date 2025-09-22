@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get('window');
 
 const Onboarding1 = ({ navigation }) => {
   const handleNext = () => {
-    navigation.navigate('Onboarding2');
+    navigation.navigate('LoginScreen');
   };
 
   const handleBack = () => {
@@ -26,19 +26,12 @@ const Onboarding1 = ({ navigation }) => {
       
       {/* Background Image */}
       <ImageBackground 
-        source={require('../../assets/back1.jpg')}
+        source={require('../../assets/back2.jpg')}
         style={styles.backgroundImage}
-        resizeMode="cover"
+        resizeMode="fit"
         imageStyle={styles.backgroundImageStyle}
       >
-        {/* Ocean Background Effect */}
-        <View style={styles.backgroundEffect}>
-          <View style={styles.diver} />
-          <View style={styles.fish1} />
-          <View style={styles.fish2} />
-          <View style={styles.fish3} />
-          <View style={styles.fish4} />
-        </View>
+        
 
         {/* Back Button */}
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
@@ -50,16 +43,17 @@ const Onboarding1 = ({ navigation }) => {
         {/* Progress Indicators */}
         <View style={styles.progressContainer}>
           <View style={styles.progressDot} />
-          <View style={[styles.progressDot, styles.activeDot]} />
           <View style={styles.progressDot} />
+          <View style={[styles.progressDot, styles.activeDot]} />
         </View>
 
         {/* Main Content */}
         <View style={styles.contentContainer}>
           <Text style={styles.title}>
             <Text style={styles.titleRegular}>Join the </Text>
-            <Text style={styles.titleHighlight}>Movement</Text>
+            
           </Text>
+          <Text style={styles.titleHighlight}>Movement</Text>
           
           <Text style={styles.subtitle}>
             Together, we can restore our blue planet
@@ -166,8 +160,8 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 58,
+    borderTopRightRadius: 58,
     paddingTop: 20,
     paddingHorizontal: 30,
     paddingBottom: 50,
@@ -179,16 +173,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
   },
-  progressDot: {
-    width: 8,
+   progressDot: {
+    width: 16,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#D1D5DB',
     marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#8B5CF6',
-    width: 24,
+    backgroundColor: '#5145E5',
+    width: 56,
     height: 8,
     borderRadius: 4,
   },
@@ -200,13 +194,15 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'left',
-    marginBottom: 16,
+    marginBottom: 4,
   },
   titleRegular: {
     color: '#1F2937',
   },
   titleHighlight: {
-    color: '#8B5CF6',
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#5145E5',
   },
   subtitle: {
     fontSize: 18,
@@ -222,10 +218,10 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   joinButton: {
-    backgroundColor: '#1F2937',
-    paddingHorizontal: 30,
+    backgroundColor: '#1E1E1E',
+    paddingHorizontal: 32,
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: 24,
     alignSelf: 'stretch',
     alignItems: 'center',
   },

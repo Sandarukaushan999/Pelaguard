@@ -13,7 +13,15 @@ const { width, height } = Dimensions.get('window');
 
 const LaunchIntroScreen = ({ navigation }) => {
   const handleNext = () => {
-    navigation.navigate('Onboarding1');
+    navigation.navigate('Onboarding3');
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const handleSkip = () => {
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -27,20 +35,23 @@ const LaunchIntroScreen = ({ navigation }) => {
         resizeMode="cover"
         imageStyle={styles.backgroundImageStyle}
       >
-        {/* Ocean Background Effect */}
-        <View style={styles.backgroundEffect}>
-          <View style={styles.jellyfish1} />
-          <View style={styles.jellyfish2} />
-          <View style={styles.jellyfish3} />
-          <View style={styles.jellyfish4} />
-        </View>
+        
+        {/* Back Button */}
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Text style={styles.backButtonText}>‹</Text>
+        </TouchableOpacity>
+
+        {/* Skip Button */}
+        <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+          <Text style={styles.skipButtonText}>Skip</Text>
+        </TouchableOpacity>
 
       {/* Content Card */}
       <View style={styles.contentCard}>
         {/* Progress Indicators */}
         <View style={styles.progressContainer}>
-          <View style={[styles.progressDot, styles.activeDot]} />
           <View style={styles.progressDot} />
+          <View style={[styles.progressDot, styles.activeDot]} />
           <View style={styles.progressDot} />
         </View>
 
@@ -83,6 +94,34 @@ const styles = StyleSheet.create({
   },
   backgroundImageStyle: {
     alignSelf: 'flex-start',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  backButtonText: {
+    fontSize: 24,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
+  skipButton: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    zIndex: 10,
+  },
+  skipButtonText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '600',
   },
   backgroundEffect: {
     position: 'absolute',
