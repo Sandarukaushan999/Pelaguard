@@ -21,7 +21,7 @@ const Onboarding3 = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#1E3A8A" />
+      <StatusBar barStyle="light-content" backgroundColor="red" />
       
       {/* Ocean Background Effect */}
       <View style={styles.backgroundEffect}>
@@ -67,8 +67,8 @@ const Onboarding3 = ({ navigation }) => {
         </View>
 
         {/* Start Button */}
-        <TouchableOpacity style={styles.startButton} onPress={handleGetStarted}>
-          <Text style={styles.startButtonText}>Start ></Text>
+      <TouchableOpacity style={styles.startButton} onPress={handleGetStarted}>
+          <Text style={styles.startButtonText}>Start {'>'}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -78,7 +78,7 @@ const Onboarding3 = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E3A8A',
+    backgroundColor: 'red',
   },
   backgroundEffect: {
     position: 'absolute',
