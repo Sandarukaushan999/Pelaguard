@@ -32,10 +32,7 @@ const Launch2 = ({ navigation }) => {
         imageStyle={styles.backgroundImageStyle}
       >
        
-        {/* Back Button */}
-        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          <Text style={styles.backButtonText}>‹</Text>
-        </TouchableOpacity>
+       
 
         {/* Content Card */}
         <View style={styles.contentCard}>

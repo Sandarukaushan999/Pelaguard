@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,45 +7,63 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
+  Image,
+  Switch,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const ProfileScreen = () => {
+  const [pushEnabled, setPushEnabled] = useState(true);
+  const [emailEnabled, setEmailEnabled] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const badgeImage1 = require('../../assets/warriorBadge.png');
+  const badgeImage2 = require('../../assets/guardianBadge.png');
+  const badgeImage3 = require('../../assets/champBadge.png');
+  const badgeImage4 = require('../../assets/turtleBadge.png');
+  const badgeImage5 = require('../../assets/WaveBadge.png');
+
   const achievements = [
-    { id: 1, name: 'Sea Turtle Saver', icon: '🐢' },
-    { id: 2, name: 'Ocean Guardian', icon: '🛡️' },
-    { id: 3, name: 'Beach Warrior', icon: '🏄' },
-    { id: 4, name: 'Wave Maker', icon: '🌊' },
-    { id: 5, name: 'Eco Champion', icon: '🏆' },
+    { id: 1, name: 'Sea Turtle Saver', icon: badgeImage4 },
+    { id: 2, name: 'Ocean Guardian', icon: badgeImage2 },
+    { id: 3, name: 'Beach Warrior', icon: badgeImage1 },
+    { id: 4, name: 'Wave Maker', icon: badgeImage5 },
+    { id: 5, name: 'Eco Champion', icon: badgeImage3 },
   ];
 
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
-      {/* Decorative header matching screenshot */}
-      <View style={styles.headerDecor}>
-        <View style={styles.bgCircleLeft} />
-        <View style={styles.bgCircleRight} />
+      {/* Decorative header matching Home gradient */}
+      <LinearGradient colors={["#1A1A32", "#635EFC"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerDecor}>
 
-        <TouchableOpacity style={styles.topSettingsButton}>
-          <Text style={styles.settingsIcon}>⚙️</Text>
+        <TouchableOpacity style={styles.iconWrapLeft} onPress={() => navigation.navigate('Notifications')}>
+          <Ionicons name="notifications-outline" size={18} color="#FFFFFF" />
+          <View style={styles.unreadDotTop} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.topSettingsButton} onPress={() => navigation.navigate('Settings')}>
+          <Ionicons name="settings-outline" size={18} color="#FFFFFF" />
         </TouchableOpacity>
 
         <View style={styles.profileSectionDecor}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
-              <Text style={styles.avatarText}>👤</Text>
+              <Ionicons name="person-outline" size={36} color="#FFFFFF" />
             </View>
-            <View style={styles.editDot}>
-              <Text style={styles.editDotIcon}>●</Text>
-            </View>
+            <TouchableOpacity style={styles.editDot} onPress={() => navigation.navigate('Settings')}>
+              <Ionicons name="create-outline" size={16} color="#6B7280" />
+            </TouchableOpacity>
           </View>
           <Text style={styles.userNameDecor}>Andrew Garfield</Text>
           <Text style={styles.userLevelDecor}>Level 7 | Eco Warrior</Text>
         </View>
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Stats Grid */}
@@ -74,14 +92,82 @@ const ProfileScreen = () => {
           <View style={styles.achievementsCard}>
             <View style={styles.achievementsGrid}>
               {achievements.map((achievement) => (
-                <View key={achievement.id} style={styles.achievementBadge}>
-                  <Text style={styles.achievementIcon}>{achievement.icon}</Text>
-                  <Text style={styles.achievementName}>{achievement.name}</Text>
+                <View key={achievement.id} style={[styles.achievementBadge, { backgroundColor: achievement.color }]}>
+                  <Image source={achievement.icon} style={styles.achievementIconImage} />
+                  <Text style={[styles.achievementName, { color: '#0F172A' }]}>{achievement.name}</Text>
                 </View>
               ))}
             </View>
           </View>
         </View>
+
+        {/* Account & Security */}
+        <View style={styles.sectionCardAlt}>
+          <Text style={styles.sectionTitle}>Account & Security</Text>
+          <TouchableOpacity style={styles.rowItem} onPress={() => navigation.navigate('Settings')}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="person-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>Edit Profile</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.rowItem}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="lock-closed-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>Change Password</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Preferences */}
+        <View style={styles.sectionCardAlt}>
+          <Text style={styles.sectionTitle}>Preferences</Text>
+          <View style={styles.rowItem}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="notifications-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>Push Notifications</Text>
+            </View>
+            <Switch value={pushEnabled} onValueChange={setPushEnabled} />
+          </View>
+
+          <View style={styles.rowItem}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="mail-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>Email Notifications</Text>
+            </View>
+            <Switch value={emailEnabled} onValueChange={setEmailEnabled} />
+          </View>
+
+          <View style={styles.rowItem}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="moon-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>Dark Mode</Text>
+            </View>
+            <Switch value={darkMode} onValueChange={setDarkMode} />
+          </View>
+        </View>
+
+        {/* About */}
+        <View style={styles.sectionCardAlt}>
+          <Text style={styles.sectionTitle}>About</Text>
+          <View style={styles.rowItem}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="information-circle-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>App Version</Text>
+            </View>
+            <Text style={styles.rowSubText}>1.0.0</Text>
+          </View>
+          <TouchableOpacity style={styles.rowItem}>
+            <View style={styles.rowLeft}>
+              <Ionicons name="document-text-outline" size={18} color="#6B7280" />
+              <Text style={styles.rowText}>Privacy Policy</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color="#D1D5DB" />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.bottomSpacer} />
       </ScrollView>
 
     </View>
@@ -94,12 +180,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
   headerDecor: {
-    backgroundColor: '#171836',
     paddingTop: 48,
     paddingBottom: 40,
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 56,
+    borderBottomRightRadius: 56,
     overflow: 'hidden',
   },
   headerBackground: {},
@@ -134,6 +219,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  iconWrapLeft: {
+    position: 'absolute',
+    left: 20,
+    top: 52,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  unreadDotTop: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#6EE7B7',
+  },
   profileSectionDecor: {
     alignItems: 'center',
     marginTop: 30,
@@ -145,7 +250,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 80,
     height: 80,
-    backgroundColor: '#8B5CF6',
+    backgroundColor: 'rgba(255,255,255,0.18)',
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -256,7 +361,6 @@ const styles = StyleSheet.create({
   },
   achievementBadge: {
     width: (width - 80) / 2,
-    backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -271,11 +375,42 @@ const styles = StyleSheet.create({
     fontSize: 32,
     marginBottom: 8,
   },
+  achievementIconImage: {
+    width: 48,
+    height: 48,
+    marginBottom: 8,
+    resizeMode: 'contain',
+  },
   achievementName: {
     fontSize: 12,
     color: '#6B7280',
     textAlign: 'center',
     fontWeight: '500',
+  },
+  sectionCardAlt: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  rowItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F3F4F6',
+  },
+  rowLeft: { flexDirection: 'row', alignItems: 'center' },
+  rowText: { marginLeft: 12, fontSize: 14, color: '#111827' },
+  rowSubText: { fontSize: 14, color: '#6B7280' },
+  bottomSpacer: {
+    height: 100,
   },
 });
 

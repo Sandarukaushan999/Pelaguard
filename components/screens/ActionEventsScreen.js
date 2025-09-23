@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const ActionEventsScreen = () => {
   const events = [
@@ -48,40 +51,56 @@ const ActionEventsScreen = () => {
     }
   };
 
+  const getDifficultyStyles = (difficulty) => {
+    const color = getDifficultyColor(difficulty);
+    return {
+      container: { backgroundColor: `${color}1A` }, // translucent bg
+      text: { color },
+    };
+  };
+
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
-      {/* Header decor */}
-      <View style={styles.headerDecor}>
-        <View style={styles.hCircleLeft} />
-        <View style={styles.hCircleRight} />
+      {/* Header with gradient */}
+      <LinearGradient colors={["#1A1A32", "#635EFC"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerDecor}>
         <View style={styles.headerTopRow}>
-          <View style={styles.bellDot}>
-            <Text style={styles.bellIcon}>🔔</Text>
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Notifications')}>
+            <Ionicons name="notifications-outline" size={18} color="#FFFFFF" />
+            <View style={styles.unreadDot} />
+          </TouchableOpacity>
+          <View style={styles.userPillWrap}>
+            <View style={styles.userPill}>
+              <Text style={styles.pillHi}>Hi ,<Text style={styles.pillName}> Yenula</Text></Text>
+              <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
+            </View>
+            <View style={styles.avatarCircle}>
+              <Ionicons name="person-outline" size={18} color="#FFFFFF" />
+            </View>
           </View>
-          <View style={styles.userPill}>
-            <Text style={styles.pillHi}>Hi, Yenula</Text>
-            <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
-          </View>
-          <View style={styles.gearCircle}>
-            <Text style={styles.gearIcon}>⚙️</Text>
-          </View>
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Settings')}>
+            <Ionicons name="settings-outline" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
         </View>
 
         {/* Floating summary card */}
         <View style={styles.summaryCard}>
           <Text style={styles.summaryTitle}>Events Joined</Text>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryNumber}>3</Text>
-            <View style={styles.summaryRightRow}>
-              <Text style={styles.summaryRightIcon}>👥</Text>
+            <View style={{ flex: 1, alignItems: 'center' }}>
+              <Text style={styles.summaryNumber}>3</Text>
+            </View>
+            <View style={styles.summaryDivider} />
+            <View style={[styles.summaryRightRow, { flex: 1 }]}>
+              <Ionicons name="people-outline" size={22} color="#34D399" style={styles.summaryRightIconFa} />
               <Text style={styles.summaryRightText}>Making impact</Text>
             </View>
           </View>
           <Text style={styles.summaryCaption}>Keep going | You're making a difference</Text>
         </View>
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 
@@ -91,24 +110,24 @@ const ActionEventsScreen = () => {
             <View key={event.id} style={styles.eventCard}>
               <View style={styles.eventHeader}>
                 <Text style={styles.eventTitle}>{event.title}</Text>
-                <View style={[styles.difficultyBadge, { backgroundColor: getDifficultyColor(event.difficulty) }]}>
-                  <Text style={styles.difficultyText}>{event.difficulty}</Text>
+                <View style={[styles.difficultyBadge, getDifficultyStyles(event.difficulty).container]}>
+                  <Text style={[styles.difficultyText, getDifficultyStyles(event.difficulty).text]}>{event.difficulty}</Text>
                 </View>
               </View>
               
               <View style={styles.eventDetails}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailIcon}>📅</Text>
+              <Ionicons name="calendar-outline" size={18} style={styles.detailIconFix} />
                   <Text style={styles.detailText}>{event.date}</Text>
                 </View>
                 
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailIcon}>📍</Text>
+              <Ionicons name="location-outline" size={18} style={styles.detailIconFix} />
                   <Text style={styles.detailText}>{event.location}</Text>
                 </View>
                 
                 <View style={styles.detailRow}>
-                  <Text style={styles.detailIcon}>👥</Text>
+              <Ionicons name="people-outline" size={18} style={styles.detailIconFix} />
                   <Text style={styles.detailText}>{event.participants}</Text>
                   <View style={styles.pointsBadge}>
                     <Text style={styles.pointsText}>{event.points}</Text>
@@ -134,83 +153,83 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
   headerDecor: {
-    backgroundColor: '#171836',
     paddingTop: 56,
-    paddingBottom: 36,
+    paddingBottom: 20,
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 56,
+    borderBottomRightRadius: 56,
     overflow: 'hidden',
-  },
-  hCircleLeft: {
-    position: 'absolute',
-    top: -40,
-    left: -30,
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    backgroundColor: '#2A2D86',
-  },
-  hCircleRight: {
-    position: 'absolute',
-    top: -60,
-    right: -60,
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-    backgroundColor: '#6F52ED',
   },
   headerTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  bellDot: {
+  iconWrap: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
-  bellIcon: { fontSize: 16, color: '#FFFFFF' },
-  userPill: {
+  unreadDot: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#6EE7B7',
+  },
+  userPillWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.22)',
+    borderRadius: 22,
+    paddingRight: 8,
+  },
+  userPill: {
+    backgroundColor: 'transparent',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 18,
     alignItems: 'center',
   },
   pillHi: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  pillName: { color: '#FFFFFF', fontSize: 12, fontWeight: '800' },
   pillEmail: { color: '#E5E7EB', fontSize: 10 },
-  gearCircle: {
+  avatarCircle: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 8,
   },
-  gearIcon: { fontSize: 16, color: '#FFFFFF' },
   content: {
     flex: 1,
     paddingHorizontal: 20,
   },
   summaryCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 18,
+    borderRadius: 28,
+    padding: 20,
     marginTop: 24,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    shadowRadius: 18,
+    elevation: 10,
   },
   summaryTitle: { fontSize: 14, color: '#111827', marginBottom: 8 },
   summaryRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  summaryNumber: { fontSize: 40, fontWeight: '800', color: '#111827' },
-  summaryRightRow: { flexDirection: 'row', alignItems: 'center' },
+  summaryDivider: { width: 1, height: 56, backgroundColor: '#E5E7EB' },
+  summaryNumber: { fontSize: 56, fontWeight: '800', color: '#111827' },
+  summaryRightRow: { flexDirection: 'column', alignItems: 'center', justifyContent: 'center' },
+  summaryRightIconFa: { marginBottom: 6 },
   summaryRightIcon: { fontSize: 18, marginRight: 6 },
   summaryRightText: { fontSize: 14, color: '#111827', fontWeight: '600' },
   summaryCaption: { marginTop: 8, textAlign: 'center', fontSize: 12, color: '#6B7280' },
@@ -219,7 +238,7 @@ const styles = StyleSheet.create({
   },
   eventCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 20,
     marginBottom: 16,
     shadowColor: '#000',
@@ -242,13 +261,12 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   difficultyBadge: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
   difficultyText: {
     fontSize: 12,
-    color: '#FFFFFF',
     fontWeight: '600',
   },
   eventDetails: {
@@ -264,6 +282,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     width: 20,
   },
+  detailIconFix: { color: '#6B7280', marginRight: 8, width: 20, textAlign: 'center' },
   detailText: {
     fontSize: 14,
     color: '#6B7280',
@@ -282,15 +301,16 @@ const styles = StyleSheet.create({
   },
   joinButton: {
     backgroundColor: '#111827',
-    paddingVertical: 10,
-    paddingHorizontal: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 56,
     borderRadius: 16,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-center',
   },
   joinButtonText: {
     fontSize: 14,
     color: '#FFFFFF',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 

@@ -9,11 +9,14 @@ import {
   StatusBar,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
 const OceanAwarenessScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const navigation = useNavigation();
 
   const categories = [
     { id: 'all', name: 'All', icon: 'apps' },
@@ -104,118 +107,54 @@ const OceanAwarenessScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
-      
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Ocean Awareness</Text>
-        <Text style={styles.subtitle}>Learn about our oceans and how to protect them</Text>
-      </View>
+      <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Featured Articles */}
-        {selectedCategory === 'all' && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Featured Articles</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {featuredArticles.map((article) => (
-                <TouchableOpacity
-                  key={article.id}
-                  style={styles.featuredCard}
-                  onPress={() => readArticle(article.id)}
-                >
-                  <View style={styles.featuredImageContainer}>
-                    {/* Image 12 goes here - Article image */}
-                    <View style={styles.imagePlaceholder}>
-                      <MaterialIcons name="article" size={40} color="#FFFFFF" />
-                      <Text style={styles.placeholderText}>{article.image}</Text>
-                    </View>
-                    <View style={styles.featuredBadge}>
-                      <Text style={styles.featuredBadgeText}>FEATURED</Text>
-                    </View>
-                  </View>
-                  <View style={styles.featuredContent}>
-                    <Text style={styles.featuredTitle}>{article.title}</Text>
-                    <Text style={styles.featuredSummary}>{article.summary}</Text>
-                    <View style={styles.featuredMeta}>
-                      <Text style={styles.featuredReadTime}>{article.readTime}</Text>
-                      <Text style={styles.featuredDate}>{article.date}</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
+      {/* Gradient header */}
+      <LinearGradient colors={["#1A1A32", "#635EFC"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerDecor}>
+        <View style={styles.headerTopRow}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            <MaterialIcons name="chevron-left" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
+
+          <View style={styles.userPillWrapHeader}>
+            <View style={styles.userPillHeader}>
+              <Text style={styles.pillHiHeader}>Hi ,<Text style={styles.pillNameHeader}> Yenula</Text></Text>
+              <Text style={styles.pillEmailHeader}>yenula123@gmail.com</Text>
+            </View>
+            <View style={styles.avatarCircleHeader}>
+              <MaterialIcons name="person" size={18} color="#FFFFFF" />
+            </View>
           </View>
-        )}
-
-        {/* Categories */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Categories</Text>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            style={styles.categoriesContainer}
-            contentContainerStyle={styles.categoriesContent}
-          >
-            {categories.map((category) => (
-              <TouchableOpacity
-                key={category.id}
-                style={[
-                  styles.categoryButton,
-                  selectedCategory === category.id && styles.categoryButtonActive
-                ]}
-                onPress={() => setSelectedCategory(category.id)}
-              >
-                <MaterialIcons 
-                  name={category.icon} 
-                  size={20} 
-                  color={selectedCategory === category.id ? '#FFFFFF' : '#6B7280'} 
-                />
-                <Text style={[
-                  styles.categoryText,
-                  selectedCategory === category.id && styles.categoryTextActive
-                ]}>
-                  {category.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
         </View>
 
-        {/* Articles List */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {selectedCategory === 'all' ? 'All Articles' : categories.find(c => c.id === selectedCategory)?.name}
-          </Text>
+        {/* Large title card */}
+        <View style={styles.titleCardWrap}>
+          <View style={styles.titleCard}>
+            <Text style={styles.titleMain}>Ocean <Text style={styles.titleAccent}>Awareness</Text></Text>
+            <Text style={styles.titleSub}>Discover the truth about our oceans</Text>
+          </View>
+        </View>
+      </LinearGradient>
+
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.articlesWrap}>
           {filteredArticles.map((article) => (
-            <TouchableOpacity
-              key={article.id}
-              style={styles.articleCard}
-              onPress={() => readArticle(article.id)}
-            >
-              <View style={styles.articleImageContainer}>
-                {/* Image 13 goes here - Article image */}
-                <View style={styles.imagePlaceholder}>
-                  <MaterialIcons name="article" size={30} color="#FFFFFF" />
-                  <Text style={styles.placeholderText}>{article.image}</Text>
+            <View key={article.id} style={styles.articleCardWhite}>
+              <View style={styles.articleRow}>
+                <View style={styles.articleIconBox}>
+                  <MaterialIcons name="article" size={20} color="#111827" />
+                </View>
+                <View style={styles.articleTextWrap}>
+                  <Text style={styles.articleTitleNew}>{article.title}</Text>
+                  <Text style={styles.articleSummaryNew}>{article.summary}</Text>
                 </View>
               </View>
-              <View style={styles.articleContent}>
-                <Text style={styles.articleTitle}>{article.title}</Text>
-                <Text style={styles.articleSummary}>{article.summary}</Text>
-                <View style={styles.articleMeta}>
-                  <View style={styles.articleAuthor}>
-                    <MaterialIcons name="person" size={14} color="#6B7280" />
-                    <Text style={styles.authorText}>{article.author}</Text>
-                  </View>
-                  <View style={styles.articleInfo}>
-                    <Text style={styles.readTimeText}>{article.readTime}</Text>
-                    <Text style={styles.dateText}>{article.date}</Text>
-                  </View>
-                </View>
+              <View style={styles.articleFooter}>
+                <TouchableOpacity style={styles.learnMoreBtn} onPress={() => readArticle(article.id)}>
+                  <Text style={styles.learnMoreText}>Learn More</Text>
+                </TouchableOpacity>
               </View>
-              <MaterialIcons name="chevron-right" size={24} color="#D1D5DB" />
-            </TouchableOpacity>
+            </View>
           ))}
         </View>
       </ScrollView>
@@ -228,25 +167,103 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
   },
-  header: {
+  headerDecor: {
+    paddingTop: 56,
+    paddingBottom: 24,
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
+    borderBottomLeftRadius: 36,
+    borderBottomRightRadius: 36,
+    overflow: 'hidden',
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  backButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userPillWrapHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderRadius: 22,
+    paddingRight: 8,
+  },
+  userPillHeader: {
+    paddingHorizontal: 12,
+  },
+  pillHiHeader: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  pillNameHeader: { color: '#FFFFFF', fontSize: 12, fontWeight: '800' },
+  pillEmailHeader: { color: '#E5E7EB', fontSize: 10 },
+  avatarCircleHeader: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+  },
+  titleCardWrap: {
+    marginTop: 6,
+    alignItems: 'center',
+  },
+  titleCard: {
+    width: '92%',
     backgroundColor: '#FFFFFF',
+    padding: 20,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 8,
+    alignItems: 'flex-start',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1F2937',
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#6B7280',
-  },
+  titleMain: { fontSize: 24, fontWeight: '700', color: '#111827' },
+  titleAccent: { color: '#5145E5' },
+  titleSub: { marginTop: 8, color: '#6B7280' },
   content: {
     flex: 1,
+    paddingHorizontal: 20,
+    marginTop: 18,
   },
+  articlesWrap: {
+    paddingBottom: 40,
+  },
+  articleCardWhite: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  articleRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  articleIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  articleTextWrap: { flex: 1 },
+  articleTitleNew: { fontSize: 16, fontWeight: '700', color: '#111827' },
+  articleSummaryNew: { fontSize: 13, color: '#6B7280', marginTop: 6 },
+  articleFooter: { marginTop: 12, alignItems: 'flex-start' },
+  learnMoreBtn: { backgroundColor: '#111827', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20 },
+  learnMoreText: { color: '#FFFFFF', fontWeight: '600' },
   section: {
     marginBottom: 30,
   },

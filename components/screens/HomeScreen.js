@@ -7,8 +7,12 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const [habits, setHabits] = useState([
     { id: 1, title: 'Use Reusable Water Bottle', description: 'Avoid single-use plastic bottles', points: '+50 points/day', completed: true },
     { id: 2, title: 'Say No to Plastic Bags', description: 'Bring your own shopping bags', points: '+30 points/day', completed: false },
@@ -27,61 +31,71 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
-      {/* Header decor to match other pages */}
-      <View style={styles.headerDecor}>
-        <View style={styles.hCircleLeft} />
-        <View style={styles.hCircleRight} />
+      {/* Header with gradient background */}
+      <LinearGradient colors={["#1A1A32", "#635EFC"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerDecor}>
+        
         <View style={styles.headerTopRow}>
-          <View style={styles.bellDot}>
-            <Text style={styles.bellIcon}>🔔</Text>
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Notifications')}>
+            <Ionicons name="notifications-outline" size={18} color="#FFFFFF" />
+            <View style={styles.unreadDot} />
+          </TouchableOpacity>
+          <View style={styles.userPillWrap}>
+            <View style={styles.userPill}>
+              <Text style={styles.pillHi}>Hi ,<Text style={styles.pillName}> Yenula</Text></Text>
+              <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
+            </View>
+            <View style={styles.avatarCircle}>
+              <Ionicons name="person-outline" size={18} color="#FFFFFF" />
+            </View>
           </View>
-          <View style={styles.userPill}>
-            <Text style={styles.pillHi}>Hi, Yenula</Text>
-            <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
-          </View>
-          <View style={styles.gearCircle}>
-            <Text style={styles.gearIcon}>⚙️</Text>
-          </View>
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Settings')}>
+            <Ionicons name="settings-outline" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
         </View>
 
         {/* Floating Impact card */}
         <View style={styles.impactCard}>
-          <Text style={styles.impactLabel}>Your Impact Score</Text>
-          <Text style={styles.impactScore}>847</Text>
-          <View style={styles.weeklyProgress}>
-            <Text style={styles.progressIcon}>📈</Text>
-            <Text style={styles.weeklyText}>+127 this week</Text>
+          <View style={styles.impactTopRow}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.impactLabel}>Your Impact Score</Text>
+              <Text style={styles.impactScore}>847</Text>
+            </View>
+            <View style={styles.vDivider} />
+            <View style={styles.trendWrap}>
+              <Ionicons name="trending-up-outline" size={48} color="#6EE7B7" />
+              <Text style={styles.weeklyText}>+127 this week</Text>
+            </View>
           </View>
           <Text style={styles.factTitle}>Ocean Fact of the Day</Text>
           <Text style={styles.factText}>
-            The Great Pacific Garbage Patch is twice the size of Texas! But with your help, we can make it smaller every day.
+            The Great Pacific Garbage Patch is twice the size of Texas! With your help, we can make it smaller every day.
           </Text>
         </View>
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         
 
         {/* Ocean Awareness */}
-        <View style={styles.sectionCard}>
+        <TouchableOpacity style={styles.sectionCard} onPress={() => navigation.navigate('OceanAwareness')}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionIcon}>
-              <Text style={styles.sectionIconText}>≡</Text>
+              <Ionicons name="reorder-three-outline" size={20} color="#6B7280" />
             </View>
             <View style={styles.sectionInfo}>
               <Text style={styles.sectionTitle}>Ocean Awareness</Text>
               <Text style={styles.sectionSubtitle}>Learn shocking facts & solutions</Text>
               <Text style={styles.sectionStats}>47 facts discovered</Text>
             </View>
-            <Text style={styles.chevron}>›</Text>
+            <Ionicons name="chevron-forward" size={22} color="#D1D5DB" />
           </View>
-        </View>
+        </TouchableOpacity>
 
         {/* Eco Habits Tracker */}
         <View style={styles.habitsCard}>
           <View style={styles.habitsHeader}>
             <View style={styles.habitsIcon}>
-              <Text style={styles.habitsIconText}>✓</Text>
+              <Ionicons name="checkmark-done-outline" size={20} color="#FFFFFF" />
             </View>
             <View style={styles.habitsInfo}>
               <Text style={styles.habitsTitle}>Eco Habits Tracker</Text>
@@ -90,7 +104,7 @@ const HomeScreen = () => {
                 <Text style={styles.habitsStatsText}>{completedCount}/{totalCount} habits active</Text>
               </View>
             </View>
-            <Text style={styles.chevronWhite}>›</Text>
+            <Ionicons name="chevron-forward" size={22} color="rgba(255,255,255,0.5)" />
           </View>
         </View>
 
@@ -98,14 +112,14 @@ const HomeScreen = () => {
         <View style={styles.sectionCard}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionIcon}>
-              <Text style={styles.sectionIconText}>👥</Text>
+              <Ionicons name="people-outline" size={20} color="#6B7280" />
             </View>
             <View style={styles.sectionInfo}>
               <Text style={styles.sectionTitle}>Action Events</Text>
               <Text style={styles.sectionSubtitle}>Join Local ocean heroes</Text>
               <Text style={styles.sectionStats}>12 events near you</Text>
             </View>
-            <Text style={styles.chevron}>›</Text>
+            <Ionicons name="chevron-forward" size={22} color="#D1D5DB" />
           </View>
         </View>
 
@@ -122,102 +136,107 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
   headerDecor: {
-    backgroundColor: '#171836',
     paddingTop: 56,
-    paddingBottom: 36,
+    paddingBottom: 14,
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 56,
+    borderBottomRightRadius: 56,
     overflow: 'hidden',
   },
-  hCircleLeft: {
-    position: 'absolute',
-    top: -40,
-    left: -30,
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    backgroundColor: '#2A2D86',
-  },
-  hCircleRight: {
-    position: 'absolute',
-    top: -60,
-    right: -60,
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-    backgroundColor: '#6F52ED',
-  },
+
   headerTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  bellDot: {
+  userPillWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.22)',
+    borderRadius: 22,
+    paddingRight: 8,
+  },
+  iconWrap: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
-  bellIcon: { fontSize: 16, color: '#FFFFFF' },
+  unreadDot: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#6EE7B7',
+  },
   userPill: {
-    backgroundColor: 'rgba(255,255,255,0.22)',
+    backgroundColor: 'transparent',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 18,
     alignItems: 'center',
   },
   pillHi: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  pillName: { color: '#FFFFFF', fontSize: 12, fontWeight: '800' },
   pillEmail: { color: '#E5E7EB', fontSize: 10 },
-  gearCircle: {
+  avatarCircle: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 8,
   },
-  gearIcon: { fontSize: 16, color: '#FFFFFF' },
   content: {
     flex: 1,
     paddingHorizontal: 0,
   },
   impactCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 18,
+    borderRadius: 36,
+    padding: 20,
     marginTop: 24,
     marginHorizontal: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    shadowRadius: 18,
+    elevation: 10,
   },
-  impactLabel: {
-    color: '#9CA3AF',
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  impactScore: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: '#1F2937',
-    marginBottom: 12,
-  },
-  weeklyProgress: {
+  impactTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 10,
   },
-  progressIcon: {
-    fontSize: 16,
-    marginRight: 8,
+  impactLabel: {
+    color: '#1F2937',
+    fontSize: 14,
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+  impactScore: {
+    fontSize: 56,
+    fontWeight: 'bold',
+    color: '#1F2937',
+    marginBottom: 0,
+  },
+  vDivider: {
+    width: 1,
+    height: 60,
+    backgroundColor: '#E5E7EB',
+    marginHorizontal: 18,
+  },
+  trendWrap: {
+    alignItems: 'center',
   },
   weeklyText: {
-    color: '#10B981',
+    color: '#1F2937',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -225,18 +244,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#1F2937',
-    marginBottom: 8,
+    textAlign: 'center',
+    marginTop: 8,
+    marginBottom: 6,
   },
   factText: {
     color: '#6B7280',
-    fontSize: 14,
+    fontSize: 12,
     lineHeight: 20,
+    textAlign: 'center',
+    marginInline: 16,
   },
   sectionCard: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: 20,
     marginBottom: 12,
-    borderRadius: 16,
+    borderRadius: 24,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -279,15 +302,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#9CA3AF',
   },
-  chevron: {
-    fontSize: 24,
-    color: '#D1D5DB',
-  },
   habitsCard: {
-    backgroundColor: '#374151',
+    backgroundColor: '#1E1E1E',
     marginHorizontal: 20,
     marginBottom: 12,
-    borderRadius: 16,
+    borderRadius: 24,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -307,10 +326,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
-  },
-  habitsIconText: {
-    fontSize: 20,
-    color: '#FFFFFF',
   },
   habitsInfo: {
     flex: 1,
@@ -337,10 +352,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '500',
-  },
-  chevronWhite: {
-    fontSize: 24,
-    color: 'rgba(255,255,255,0.5)',
   },
   bottomSpacer: {
     height: 100,

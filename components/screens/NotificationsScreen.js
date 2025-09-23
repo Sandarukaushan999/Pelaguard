@@ -8,11 +8,15 @@ import {
   Dimensions,
   StatusBar,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 
 const NotificationsScreen = () => {
   const [selectedTab, setSelectedTab] = useState('All');
+  const navigation = useNavigation();
 
   const tabs = ['All', 'Events', 'Habits', 'News'];
 
@@ -20,7 +24,6 @@ const NotificationsScreen = () => {
     {
       id: 1,
       type: 'achievement',
-      icon: '🏆',
       title: 'Achievement Unlocked!',
       message: "You've saved 50 plastic bottles this month!",
       time: '2 hours ago',
@@ -29,7 +32,6 @@ const NotificationsScreen = () => {
     {
       id: 2,
       type: 'event',
-      icon: '🧹',
       title: 'Beach Cleanup Tomorrow!',
       message: 'Galle Face cleanup starts at 8.00 AM',
       time: '5 hours ago',
@@ -38,7 +40,6 @@ const NotificationsScreen = () => {
     {
       id: 3,
       type: 'fact',
-      icon: '🌊',
       title: 'Ocean Fact of the Day',
       message: "Did you know? Oceans produce 70% of Earth's oxygen!",
       time: '12 hours ago',
@@ -50,7 +51,6 @@ const NotificationsScreen = () => {
     {
       id: 4,
       type: 'community',
-      icon: '👥',
       title: 'Community Milestone!',
       message: 'Save the sea community reached 1,000 members!',
       time: '1 day ago',
@@ -59,7 +59,6 @@ const NotificationsScreen = () => {
     {
       id: 5,
       type: 'report',
-      icon: '📊',
       title: 'Weekly Impact Report',
       message: 'Your actions saved 12 bottles and 3kg CO2 this week!',
       time: '1 day ago',
@@ -69,12 +68,12 @@ const NotificationsScreen = () => {
 
   const getNotificationIcon = (type) => {
     switch (type) {
-      case 'achievement': return '🏆';
-      case 'event': return '🧹';
-      case 'fact': return '🌊';
-      case 'community': return '👥';
-      case 'report': return '📊';
-      default: return '🔔';
+      case 'achievement': return 'trophy-outline';
+      case 'event': return 'calendar-outline';
+      case 'fact': return 'information-circle-outline';
+      case 'community': return 'people-outline';
+      case 'report': return 'bar-chart-outline';
+      default: return 'notifications-outline';
     }
   };
 
@@ -89,30 +88,51 @@ const NotificationsScreen = () => {
     }
   };
 
+  const filterNotifications = (list, tab) => {
+    if (tab === 'All') return list;
+    // Map tabs to types; 'Events' -> 'event', 'Habits' currently map to 'achievement' (example), 'News' -> 'fact'
+    const map = {
+      Events: 'event',
+      Habits: 'achievement',
+      News: 'fact',
+    };
+    const type = map[tab];
+    if (!type) return list;
+    return list.filter((n) => n.type === type);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
       {/* Decorative header to match other screens */}
-      <View style={styles.headerDecor}>
-        <View style={styles.hCircleLeft} />
-        <View style={styles.hCircleRight} />
-
+      <LinearGradient colors={["#1A1A32", "#635EFC"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerDecor}>
+        
         <View style={styles.headerTopRow}>
-          <View style={styles.bellDot}>
-            <Text style={styles.bellIcon}>🔔</Text>
-          </View>
-          <View style={styles.userPill}>
-            <Text style={styles.pillHi}>Hi, Yenula</Text>
-            <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
-          </View>
-          <View style={styles.gearCircle}>
-            <Text style={styles.gearIcon}>⚙️</Text>
-          </View>
-        </View>
+          {/* Back button on the left (replaces notification icon) */}
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
 
-        {/* Tabs inside header as a rounded group */}
-        <View style={styles.tabsBar}>
+          {/* Center user pill (matches other screens) */}
+          <View style={styles.userPillWrap}>
+            <View style={styles.userPill}>
+              <Text style={styles.pillHi}>Hi ,<Text style={styles.pillName}> Yenula</Text></Text>
+              <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
+            </View>
+            <View style={styles.avatarCircle}>
+              <Ionicons name="person-outline" size={18} color="#FFFFFF" />
+            </View>
+          </View>
+
+          {/* Settings icon on the right */}
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Settings')}>
+            <Ionicons name="settings-outline" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
+  </View>
+
+  {/* Tabs inside header as a rounded group */}
+  <View style={styles.tabsBar}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {tabs.map((tab) => (
               <TouchableOpacity
@@ -127,7 +147,7 @@ const NotificationsScreen = () => {
             ))}
           </ScrollView>
         </View>
-      </View>
+      </LinearGradient>
 
       {/* Tabs moved into header */}
 
@@ -141,10 +161,20 @@ const NotificationsScreen = () => {
             </TouchableOpacity>
           </View>
           
-          {todayNotifications.map((notification) => (
+          {(() => {
+            const filteredToday = filterNotifications(todayNotifications, selectedTab);
+            if (filteredToday.length === 0) {
+              return (
+                <View style={{ paddingVertical: 20 }}>
+                  <Text style={{ textAlign: 'center', color: '#6B7280' }}>No notifications</Text>
+                </View>
+              );
+            }
+
+            return filteredToday.map((notification) => (
             <View key={notification.id} style={styles.notificationCard}>
               <View style={[styles.notificationIcon, { backgroundColor: getNotificationColor(notification.type) + '20' }]}>
-                <Text style={styles.notificationIconText}>{notification.icon}</Text>
+           <Ionicons name={getNotificationIcon(notification.type)} size={18} color={getNotificationColor(notification.type)} />
               </View>
               
               <View style={styles.notificationContent}>
@@ -157,60 +187,63 @@ const NotificationsScreen = () => {
                   )}
                 </View>
                 <Text style={styles.notificationMessage}>{notification.message}</Text>
-                <Text style={styles.notificationTime}>{notification.time}</Text>
-              </View>
-              
-              <View style={styles.notificationActions}>
-                <TouchableOpacity style={styles.dismissButton}>
-                  <Text style={styles.dismissText}>Dismiss</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.viewButton}>
-                  <Text style={styles.viewButtonText}>View</Text>
-                </TouchableOpacity>
+
+                <View style={styles.notificationFooterRow}>
+                  <Text style={styles.notificationTime}>{notification.time}</Text>
+
+                  <View style={styles.notificationActionsInline}>
+                    <TouchableOpacity style={styles.dismissButton}>
+                      <Text style={styles.dismissText}>Dismiss</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.viewButton}>
+                      <Text style={styles.viewButtonText}>View</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
-          ))}
+            ));
+          })()}
         </View>
 
         {/* Yesterday Notifications */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Yesterday Notifications</Text>
           
-          {yesterdayNotifications.map((notification) => (
+          {(() => {
+            const filteredYesterday = filterNotifications(yesterdayNotifications, selectedTab);
+            if (filteredYesterday.length === 0) {
+              return null;
+            }
+            return filteredYesterday.map((notification) => (
             <View key={notification.id} style={styles.notificationCard}>
               <View style={[styles.notificationIcon, { backgroundColor: getNotificationColor(notification.type) + '20' }]}>
-                <Text style={styles.notificationIconText}>{notification.icon}</Text>
+           <Ionicons name={getNotificationIcon(notification.type)} size={18} color={getNotificationColor(notification.type)} />
               </View>
               
               <View style={styles.notificationContent}>
                 <Text style={styles.notificationTitle}>{notification.title}</Text>
                 <Text style={styles.notificationMessage}>{notification.message}</Text>
-                <Text style={styles.notificationTime}>{notification.time}</Text>
-              </View>
-              
-              <View style={styles.notificationActions}>
-                <TouchableOpacity style={styles.dismissButton}>
-                  <Text style={styles.dismissText}>Dismiss</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.viewButton}>
-                  <Text style={styles.viewButtonText}>View</Text>
-                </TouchableOpacity>
+
+                <View style={styles.notificationFooterRow}>
+                  <Text style={styles.notificationTime}>{notification.time}</Text>
+
+                  <View style={styles.notificationActionsInline}>
+                    <TouchableOpacity style={styles.dismissButton}>
+                      <Text style={styles.dismissText}>Dismiss</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.viewButton}>
+                      <Text style={styles.viewButtonText}>View</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
             </View>
-          ))}
+            ));
+          })()}
         </View>
 
-        {/* Settings Card */}
-        <View style={styles.settingsCard}>
-          <View style={styles.settingsIcon}>
-            <Text style={styles.settingsIconText}>⚙️</Text>
-          </View>
-          <View style={styles.settingsContent}>
-            <Text style={styles.settingsTitle}>Notification Setting</Text>
-            <Text style={styles.settingsSubtitle}>Manage your preferences</Text>
-          </View>
-          <Text style={styles.settingsArrow}>›</Text>
-        </View>
+        {/* Settings Card removed as requested */}
       </ScrollView>
     </View>
   );
@@ -222,12 +255,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
   headerDecor: {
-    backgroundColor: '#171836',
     paddingTop: 56,
-    paddingBottom: 24,
+    paddingBottom: 14,
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 56,
+    borderBottomRightRadius: 56,
     overflow: 'hidden',
   },
   hCircleLeft: {
@@ -253,33 +285,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  bellDot: {
+  iconWrap: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: 'rgba(255,255,255,0.18)',
+    
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
-  bellIcon: { fontSize: 16, color: '#FFFFFF' },
-  userPill: {
+  userPillWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.22)',
+    borderRadius: 22,
+    paddingRight: 8,
+  },
+  userPill: {
+    backgroundColor: 'transparent',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 18,
     alignItems: 'center',
   },
   pillHi: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  pillName: { color: '#FFFFFF', fontSize: 12, fontWeight: '800' },
   pillEmail: { color: '#E5E7EB', fontSize: 10 },
-  gearCircle: {
+  avatarCircle: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 8,
   },
-  gearIcon: { fontSize: 16, color: '#FFFFFF' },
   tabsBar: {
     marginTop: 16,
     backgroundColor: 'rgba(255,255,255,0.18)',
@@ -324,16 +364,16 @@ const styles = StyleSheet.create({
   },
   markAllText: {
     fontSize: 14,
-    color: '#3B82F6',
+    color: '#959595ff',
     fontWeight: '500',
   },
   notificationCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
+    borderRadius: 24,
     padding: 16,
     marginBottom: 12,
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.15,
@@ -349,12 +389,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 12,
   },
-  notificationIconText: {
-    fontSize: 20,
-  },
   notificationContent: {
     flex: 1,
-    marginRight: 12,
+    marginRight: 8,
   },
   notificationHeader: {
     flexDirection: 'row',
@@ -371,7 +408,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -10,
     right: 16,
-    backgroundColor: '#7C3AED',
+    backgroundColor: '#5B5CF6',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
@@ -391,11 +428,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#9CA3AF',
   },
+  notificationFooterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  notificationActionsInline: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   notificationActions: {
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   dismissButton: {
-    marginBottom: 8,
+    marginRight: 12,
+    paddingVertical: 6,
   },
   dismissText: {
     fontSize: 14,
@@ -404,51 +454,15 @@ const styles = StyleSheet.create({
   viewButton: {
     backgroundColor: '#1F2937',
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
+    paddingVertical: 6,
+    borderRadius: 20,
   },
   viewButtonText: {
     fontSize: 14,
     color: '#FFFFFF',
     fontWeight: '600',
   },
-  settingsCard: {
-    backgroundColor: '#1F2937',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  settingsIcon: {
-    width: 40,
-    height: 40,
-    backgroundColor: '#374151',
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  settingsIconText: {
-    fontSize: 20,
-  },
-  settingsContent: {
-    flex: 1,
-  },
-  settingsTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 2,
-  },
-  settingsSubtitle: {
-    fontSize: 14,
-    color: '#9CA3AF',
-  },
-  settingsArrow: {
-    fontSize: 20,
-    color: '#6B7280',
-  },
+  // settings styles removed because the settings card was deleted
 });
 
 export default NotificationsScreen;

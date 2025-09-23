@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 const EcoHabitsScreen = () => {
   const [habits, setHabits] = useState([
@@ -25,26 +28,30 @@ const EcoHabitsScreen = () => {
   const completedCount = habits.filter(habit => habit.completed).length;
   const totalCount = habits.length;
 
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
-      {/* Header decor with pill, bell and gear */}
-      <View style={styles.headerDecor}>
-        <View style={styles.hCircleLeft} />
-        <View style={styles.hCircleRight} />
-
+      {/* Header with gradient + pill */}
+      <LinearGradient colors={["#1A1A32", "#635EFC"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.headerDecor}>
         <View style={styles.headerTopRow}>
-          <View style={styles.bellDot}>
-            <Text style={styles.bellIcon}>🔔</Text>
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Notifications')}>
+            <Ionicons name="notifications-outline" size={18} color="#FFFFFF" />
+            <View style={styles.unreadDot} />
+          </TouchableOpacity>
+          <View style={styles.userPillWrap}>
+            <View style={styles.userPill}>
+              <Text style={styles.pillHi}>Hi ,<Text style={styles.pillName}> Yenula</Text></Text>
+              <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
+            </View>
+            <View style={styles.avatarCircle}>
+              <Ionicons name="person-outline" size={18} color="#FFFFFF" />
+            </View>
           </View>
-          <View style={styles.userPill}>
-            <Text style={styles.pillHi}>Hi, Yenula</Text>
-            <Text style={styles.pillEmail}>yenula123@gmail.com</Text>
-          </View>
-          <View style={styles.gearCircle}>
-            <Text style={styles.gearIcon}>⚙️</Text>
-          </View>
+          <TouchableOpacity style={styles.iconWrap} onPress={() => navigation.navigate('Settings')}>
+            <Ionicons name="settings-outline" size={18} color="#FFFFFF" />
+          </TouchableOpacity>
         </View>
 
         {/* Progress card */}
@@ -58,7 +65,7 @@ const EcoHabitsScreen = () => {
           </View>
           <Text style={styles.progressCaption}>Keep going | You're making a difference</Text>
         </View>
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
 
@@ -72,11 +79,10 @@ const EcoHabitsScreen = () => {
             >
               <View style={styles.habitContent}>
                 <View style={styles.habitIconCircle}>
-                  <Text style={styles.habitIconText}>
-                    {habit.id === 1 ? '💧' : 
-                     habit.id === 2 ? '🛍️' : 
-                     habit.id === 3 ? '👥' : '🌱'}
-                  </Text>
+                  {habit.id === 1 && <Ionicons name="water-outline" size={20} color="#6B7280" />}
+                  {habit.id === 2 && <Ionicons name="bag-outline" size={20} color="#6B7280" />}
+                  {habit.id === 3 && <Ionicons name="people-outline" size={20} color="#6B7280" />}
+                  {habit.id === 4 && <Ionicons name="leaf-outline" size={20} color="#6B7280" />}
                 </View>
                 
                 <View style={styles.habitInfo}>
@@ -107,15 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
   },
-  header: {
-    backgroundColor: '#1E3A8A',
-    paddingTop: 60,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+  header: {},
   notificationButton: {
     position: 'relative',
   },
@@ -162,74 +160,72 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerDecor: {
-    backgroundColor: '#171836',
     paddingTop: 56,
     paddingBottom: 36,
     paddingHorizontal: 20,
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
+    borderBottomLeftRadius: 56,
+    borderBottomRightRadius: 56,
     overflow: 'hidden',
-  },
-  hCircleLeft: {
-    position: 'absolute',
-    top: -40,
-    left: -30,
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    backgroundColor: '#2A2D86',
-  },
-  hCircleRight: {
-    position: 'absolute',
-    top: -60,
-    right: -60,
-    width: 280,
-    height: 280,
-    borderRadius: 140,
-    backgroundColor: '#6F52ED',
   },
   headerTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  bellDot: {
+  iconWrap: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
-  bellIcon: { fontSize: 16, color: '#FFFFFF' },
-  userPill: {
+  unreadDot: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#6EE7B7',
+  },
+  userPillWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'rgba(255,255,255,0.22)',
+    borderRadius: 22,
+    paddingRight: 8,
+  },
+  userPill: {
+    backgroundColor: 'transparent',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 18,
     alignItems: 'center',
   },
   pillHi: { color: '#FFFFFF', fontSize: 12, fontWeight: '700' },
+  pillName: { color: '#FFFFFF', fontSize: 12, fontWeight: '800' },
   pillEmail: { color: '#E5E7EB', fontSize: 10 },
-  gearCircle: {
+  avatarCircle: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: 'rgba(255,255,255,0.18)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 8,
   },
-  gearIcon: { fontSize: 16, color: '#FFFFFF' },
   progressCard: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 18,
+    borderRadius: 28,
+    padding: 20,
     marginTop: 24,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.15,
-    shadowRadius: 12,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.2,
+    shadowRadius: 18,
+    elevation: 10,
   },
   progressTitle: { fontSize: 14, color: '#111827', marginBottom: 8 },
   progressNumberRow: { alignItems: 'center', marginBottom: 12 },
@@ -242,7 +238,7 @@ const styles = StyleSheet.create({
   },
   progressBarInner: {
     height: '100%',
-    backgroundColor: '#7C3AED',
+    backgroundColor: '#5145E5',
     width: '0%'
   },
   progressCaption: { marginTop: 8, textAlign: 'center', fontSize: 12, color: '#6B7280' },
@@ -291,7 +287,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   pointsPill: {
-    backgroundColor: '#7C3AED',
+    backgroundColor: '#8373fbff',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
@@ -314,7 +310,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   toggleInactive: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#c5c5c5ff',
     borderWidth: 2,
     borderColor: '#D1D5DB',
     justifyContent: 'flex-start',

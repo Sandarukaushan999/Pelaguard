@@ -28,12 +28,7 @@ const LaunchScreen = ({ navigation }) => {
         resizeMode="cover"
       >
         {/* Background to mimic the provided purple/blue gradient */}
-        <View style={styles.backgroundLayer}>
-          <View style={styles.pinkGlow} />
-          <View style={styles.purpleGlow} />
-          <View style={styles.blueGlow} />
-          <View style={styles.vignette} />
-        </View>
+        
 
         {/* Centered wordmark */}
         <View style={styles.brandContainer}>
@@ -60,7 +55,7 @@ const styles = StyleSheet.create({
   },
   backgroundLayer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#0A0B2E',
+    backgroundColor: 'transparent',
   },
   pinkGlow: {
     position: 'absolute',
@@ -70,7 +65,7 @@ const styles = StyleSheet.create({
     height: 320,
     borderRadius: 320,
     backgroundColor: '#D946EF',
-    opacity: 0.55,
+    opacity: 0.65,
   },
   purpleGlow: {
     position: 'absolute',
@@ -80,7 +75,7 @@ const styles = StyleSheet.create({
     height: 180,
     borderRadius: 200,
     backgroundColor: '#7C3AED',
-    opacity: 0.45,
+    opacity: 0.65,
   },
   blueGlow: {
     position: 'absolute',
@@ -90,11 +85,11 @@ const styles = StyleSheet.create({
     height: 380,
     borderRadius: 380,
     backgroundColor: '#1E3A8A',
-    opacity: 0.85,
+    opacity: 0.9,
   },
   vignette: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(3,6,30,0.55)',
+    backgroundColor: 'rgba(3,6,30,0.45)',
   },
   brandContainer: {
     flex: 1,

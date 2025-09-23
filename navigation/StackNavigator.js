@@ -11,6 +11,9 @@ import Onboarding3 from '../components/screens/Onboarding1';
 import LoginScreen from '../components/screens/LoginScreen';
 import SignupScreen from '../components/screens/SignupScreen';
 import TabNavigator from './TabNavigator';
+import NotificationsScreen from '../components/screens/NotificationsScreen';
+import SettingsScreen from '../components/screens/SettingsScreen';
+import OceanAwarenessScreen from '../components/screens/OceanAwarenessScreen';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +35,9 @@ const StackNavigator = () => {
         <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen name="SignupScreen" component={SignupScreen} />
         <Stack.Screen name="MainTabs" component={TabNavigator} />
+        <Stack.Screen name="Notifications" component={NotificationsScreen} />
+        <Stack.Screen name="OceanAwareness" component={OceanAwarenessScreen} />
+        <Stack.Screen name="Settings" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
