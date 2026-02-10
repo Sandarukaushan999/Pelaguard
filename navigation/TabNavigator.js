@@ -1,11 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import HomeScreen from '../components/screens/HomeScreen';
-import AllocationScreen from '../components/screens/ActionEventsScreen';
-import ExpensesScreen from '../components/screens/EcoHabitsScreen';
-import SalesScreen from '../components/screens/ProfileScreen';
+import AllocationScreen from '../components/screens/AllocationScreen';
+import ExpensesScreen from '../components/screens/ExpensesScreen';
+import SalesScreen from '../components/screens/SalesScreen';
 import SettingsScreen from '../components/screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
@@ -21,7 +21,7 @@ const TabNavigator = () => {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Allocation') {
             iconName = focused ? 'layers' : 'layers-outline';
-          } else if (route.name === 'Expences') {
+          } else if (route.name === 'Expenses') {
             iconName = focused ? 'cash' : 'cash-outline';
           } else if (route.name === 'Sales') {
             iconName = focused ? 'stats-chart' : 'stats-chart-outline';
@@ -38,7 +38,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Dashboard" component={HomeScreen} />
       <Tab.Screen name="Allocation" component={AllocationScreen} />
-      <Tab.Screen name="Expences" component={ExpensesScreen} />
+      <Tab.Screen name="Expenses" component={ExpensesScreen} />
       <Tab.Screen name="Sales" component={SalesScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>

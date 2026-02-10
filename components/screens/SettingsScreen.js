@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,11 @@ const SettingsScreen = () => {
   const [locationEnabled, setLocationEnabled] = useState(true);
   const [autoSyncEnabled, setAutoSyncEnabled] = useState(true);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
+  const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+  const [glassModeEnabled, setGlassModeEnabled] = useState(false);
+
+  const isDark = darkModeEnabled;
+  const isGlass = glassModeEnabled;
 
   const handleLogout = () => {
     Alert.alert('Logout', 'Do you want to log out?', [
@@ -32,8 +37,10 @@ const SettingsScreen = () => {
           <Ionicons name={icon} size={20} color="#2563EB" />
         </View>
         <View style={styles.rowText}>
-          <Text style={styles.rowTitle}>{title}</Text>
-          {subtitle ? <Text style={styles.rowSubtitle}>{subtitle}</Text> : null}
+          <Text style={[styles.rowTitle, isDark && styles.rowTitleDark]}>{title}</Text>
+          {subtitle ? (
+            <Text style={[styles.rowSubtitle, isDark && styles.rowSubtitleDark]}>{subtitle}</Text>
+          ) : null}
         </View>
       </View>
       {right}
@@ -41,11 +48,17 @@ const SettingsScreen = () => {
   );
 
   const SectionHeader = ({ title }) => (
-    <Text style={styles.sectionTitle}>{title}</Text>
+    <Text style={[styles.sectionTitle, isDark && styles.sectionTitleDark]}>{title}</Text>
   );
 
+  const cardStyle = [
+    styles.card,
+    isDark && styles.cardDark,
+    isGlass && (isDark ? styles.cardGlassDark : styles.cardGlassLight),
+  ];
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isDark && styles.containerDark]}>
       <StatusBar barStyle="light-content" backgroundColor="#171836" />
 
       <LinearGradient
@@ -62,7 +75,7 @@ const SettingsScreen = () => {
           <MaterialCommunityIcons name="cog" size={26} color="#FFFFFF" />
         </View>
 
-        <View style={styles.profileCard}>
+        <View style={[styles.profileCard, isGlass && styles.profileCardGlass]}>
           <View style={styles.avatarCircle}>
             <Ionicons name="person" size={22} color="#FFFFFF" />
           </View>
@@ -78,7 +91,7 @@ const SettingsScreen = () => {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <SectionHeader title="Account" />
-        <View style={styles.card}>
+        <View style={cardStyle}>
           <SettingRow
             icon="person-circle-outline"
             title="Profile"
@@ -108,8 +121,39 @@ const SettingsScreen = () => {
           />
         </View>
 
+        <SectionHeader title="Appearance" />
+        <View style={cardStyle}>
+          <SettingRow
+            icon="moon-outline"
+            title="Dark Mode"
+            subtitle="Reduce glare in low light"
+            right={
+              <Switch
+                value={darkModeEnabled}
+                onValueChange={setDarkModeEnabled}
+                trackColor={{ false: '#E5E7EB', true: '#93C5FD' }}
+                thumbColor={darkModeEnabled ? '#2563EB' : '#F3F4F6'}
+              />
+            }
+          />
+          <View style={styles.divider} />
+          <SettingRow
+            icon="sparkles-outline"
+            title="Glass Effect"
+            subtitle="Translucent cards & panels"
+            right={
+              <Switch
+                value={glassModeEnabled}
+                onValueChange={setGlassModeEnabled}
+                trackColor={{ false: '#E5E7EB', true: '#93C5FD' }}
+                thumbColor={glassModeEnabled ? '#2563EB' : '#F3F4F6'}
+              />
+            }
+          />
+        </View>
+
         <SectionHeader title="App Settings" />
-        <View style={styles.card}>
+        <View style={cardStyle}>
           <SettingRow
             icon="notifications-outline"
             title="Notifications"
@@ -161,7 +205,7 @@ const SettingsScreen = () => {
         </View>
 
         <SectionHeader title="System" />
-        <View style={styles.card}>
+        <View style={cardStyle}>
           <SettingRow
             icon="document-text-outline"
             title="Terms & Privacy"
@@ -200,6 +244,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F1F5F9',
   },
+  containerDark: {
+    backgroundColor: '#0B1220',
+  },
   header: {
     paddingTop: 50,
     paddingBottom: 20,
@@ -233,6 +280,11 @@ const styles = StyleSheet.create({
     padding: 14,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  profileCardGlass: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.25)',
   },
   avatarCircle: {
     width: 44,
@@ -279,6 +331,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
+  sectionTitleDark: {
+    color: '#94A3B8',
+  },
   card: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: 20,
@@ -291,6 +346,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 4,
+  },
+  cardDark: {
+    backgroundColor: '#0F172A',
+  },
+  cardGlassDark: {
+    backgroundColor: 'rgba(15,23,42,0.7)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+  },
+  cardGlassLight: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.6)',
   },
   row: {
     flexDirection: 'row',
@@ -320,10 +388,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#1F2937',
   },
+  rowTitleDark: {
+    color: '#F8FAFC',
+  },
   rowSubtitle: {
     fontSize: 12,
     color: '#6B7280',
     marginTop: 2,
+  },
+  rowSubtitleDark: {
+    color: '#CBD5F5',
   },
   divider: {
     height: 1,
@@ -351,7 +425,3 @@ const styles = StyleSheet.create({
 });
 
 export default SettingsScreen;
-
-
-
-
